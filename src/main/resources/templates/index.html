@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Placas de Vídeo</title>
+    <style>
+        body { font-family: sans-serif; margin: 40px; background-color: #f8f9fa; }
+        .box { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h2 { color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px; }
+        input { padding: 8px; margin: 5px; border: 1px solid #ddd; border-radius: 4px; }
+        button { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background: #e9ecef; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>Cadastrar Nova Placa (INSERT)</h2>
+        <form th:action="@{/placas/salvar}" th:object="${placa}" method="post">
+            <input type="text" th:field="*{modelo}" placeholder="Modelo (ex: RTX 4060)" required/>
+            <input type="text" th:field="*{marca}" placeholder="Marca (ex: ASUS)"/>
+            <input type="number" step="0.01" th:field="*{preco}" placeholder="Preço"/>
+            <button type="submit">Gravar no Banco</button>
+        </form>
+
+        <hr style="margin: 30px 0;">
+
+        <h2>Placas no Sistema (SELECT)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Modelo</th>
+                    <th>Marca</th>
+                    <th>Preço</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="p : ${lista}">
+                    <td th:text="${p.modelo}"></td>
+                    <td th:text="${p.marca}"></td>
+                    <td th:text="'R$ ' + ${#numbers.formatDecimal(p.preco, 1, 2, 'COMMA')}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <p th:if="${#lists.isEmpty(lista)}">Nenhuma placa cadastrada.</p>
+    </div>
+</body>
+</html>
