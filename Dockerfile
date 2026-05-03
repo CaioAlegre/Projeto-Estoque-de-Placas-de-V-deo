@@ -11,4 +11,4 @@ RUN chmod 777 mvnw
 
 RUN ./mvnw package -DskipTests
 
-CMD ["java", "-jar", "target/placas-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-Dserver.port=${PORT:-8080}", "-jar", "target/placas-0.0.1-SNAPSHOT.jar"]
