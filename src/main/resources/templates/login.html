@@ -1,20 +1,29 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Login - Estoque</title>
+    <meta charset="UTF-8">
+    <title>Login - Estoque de Placas</title>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f9; margin: 0; }
+        .login-box { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; width: 100%; max-width: 350px; }
+        h2 { color: #333; margin-bottom: 20px; }
+        input { display: block; width: 100%; margin: 15px 0; padding: 12px; box-sizing: border-box; border: 1px solid #ddd; border-radius: 4px; }
+        button { background-color: #007bff; color: white; border: none; padding: 12px; cursor: pointer; border-radius: 4px; width: 100%; font-size: 16px; font-weight: bold; }
+        button:hover { background-color: #0056b3; }
+        .msg-error { color: #dc3545; margin-bottom: 15px; font-size: 14px; }
+        .msg-success { color: #28a745; margin-bottom: 15px; font-size: 14px; }
+    </style>
 </head>
 <body>
-    <div>
-        <h2>Entrar no Sistema</h2>
-        <div th:if="${param.error}" style="color: red;">Usuário ou senha inválidos.</div>
-        <div th:if="${param.logout}" style="color: green;">Você saiu com sucesso.</div>
+    <div class="login-box">
+        <h2>Acesso ao Sistema</h2>
+        
+        <div th:if="${param.error}" class="msg-error">Usuário ou senha inválidos.</div>
+        <div th:if="${param.logout}" class="msg-success">Você saiu com sucesso.</div>
+        
         <form th:action="@{/login}" method="post">
-            <label>Usuário:</label>
-            <input type="text" name="username" required>
-            <br><br>
-            <label>Senha:</label>
-            <input type="password" name="password" required>
-            <br><br>
+            <input type="text" name="username" placeholder="Usuário" required autofocus>
+            <input type="password" name="password" placeholder="Senha" required>
             <button type="submit">Entrar</button>
         </form>
     </div>
