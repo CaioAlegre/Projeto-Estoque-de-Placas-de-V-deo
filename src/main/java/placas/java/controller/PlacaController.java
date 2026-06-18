@@ -30,22 +30,19 @@ public class PlacaController {
     // ATUALIZANDO O MÉTODO PARA RECEBER A IMAGEM 
     @PostMapping("/placas/salvar")
     public String salvar(@ModelAttribute Placavideo placa, @RequestParam("imagemPlaca") MultipartFile arquivo) {
-        try {
-            // Se o usuário selecionou uma foto e ela não está vazia...
-            if (!arquivo.isEmpty()) {
-                // Manda pro Cloudinary e recebe o link
-                String urlDaImagem = uploadService.fazerUpload(arquivo);
-                // Coloca o link dentro da placa
-                placa.setImagemUrl(urlDaImagem);
-            }
-            
-            // Manda o service salvar no banco (agora com a foto!)
-            service.salvar(placa); 
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         
+        // 1. Tenta fazer o upload da foto isoladamente
+        if (arquivo != null && !arquivo.isEmpty()) {
+            try {
+                String urlDaImagem = uploadService.fazerUpload(arquivo);
+                placa.setImagemUrl(urlDaImagem);
+            } catch (Exception e) {
+                // Se a foto der erro, avisa no terminal, mas NÃO para o processo!
+                System.out.println("ERRO NO UPLOAD DA IMAGEM: " + e.getMessage());
+            }
+        }
+        // 2. Salva a placa no banco de dados (com foto ou sem foto, ela será salva!)
+        service.salvar(placa); 
         return "redirect:/";
     }
 
