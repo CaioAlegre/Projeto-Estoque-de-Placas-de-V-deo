@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login - Estoque</title>
+</head>
+<body>
+    <div>
+        <h2>Entrar no Sistema</h2>
+        <div th:if="${param.error}" style="color: red;">Usuário ou senha inválidos.</div>
+        <div th:if="${param.logout}" style="color: green;">Você saiu com sucesso.</div>
+        <form th:action="@{/login}" method="post">
+            <label>Usuário:</label>
+            <input type="text" name="username" required>
+            <br><br>
+            <label>Senha:</label>
+            <input type="password" name="password" required>
+            <br><br>
+            <button type="submit">Entrar</button>
+        </form>
+    </div>
+</body>
+</html>

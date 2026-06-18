@@ -12,7 +12,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 // @Configuration avisa o Spring: "Leia este arquivo assim que o sistema ligar, 
-// pois aqui estão as regras de configuração do projeto".
+// regras de configuração do projeto".
 @Configuration
 public class SecurityConfig {
 
@@ -20,7 +20,7 @@ public class SecurityConfig {
     // O PasswordEncoder é o "Criptografador" de senhas.
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // BCrypt é o padrão da indústria. Ele pega a senha "admin123" e transforma 
+        // BCrypt:Ele pega a senha "admin123" e transforma 
         // num código maluco (ex: $2a$10$xyz...) para ninguém descobrir.
         return new BCryptPasswordEncoder();
     }
@@ -39,13 +39,10 @@ public class SecurityConfig {
         return new InMemoryUserDetailsManager(admin);
     }
 
-    // Este é o método MAIS IMPORTANTE. É o "Porteiro" de fato.
     // Ele dita quem pode entrar, que rotas são públicas e como é a tela de login.
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-            // CSRF é uma proteção contra ataques externos. Desligamos (.disable) 
-            // para facilitar os testes da sua API REST no momento.
             .csrf(csrf -> csrf.disable()) 
             
             // Aqui configuramos as REGRAS DE ACESSO das URLs:
@@ -72,12 +69,10 @@ public class SecurityConfig {
             
             // Aqui configuramos o botão de SAIR (LOGOUT):
             .logout(logout -> logout
-                // Quando o usuário acessar "/logout" (clicar no botão Sair)...
                 .logoutUrl("/logout")
-                // ...ele é jogado de volta para a tela de login com a mensagem "?logout" na URL.
                 .logoutSuccessUrl("/login?logout")
                 .permitAll()
             )
-            .build(); // Constrói e aplica todas essas regras.
+            .build(); 
     }
 }
