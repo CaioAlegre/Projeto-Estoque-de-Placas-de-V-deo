@@ -14,4 +14,4 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 cloudinary:
-  url: ${CLOUDINARY_URL=cloudinary://154927418879722:4_FB2vvrvBWNUOCK71-M6ZkPyeE@do7yferaz}
+  url: cloudinary://154927418879722:4_FB2vvrvBWNUOCK71-M6ZkPyeE@do7yferaz
