@@ -9,16 +9,18 @@
         .box { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         h2 { color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px; }
         input { padding: 8px; margin: 5px; border: 1px solid #ddd; border-radius: 4px; }
+        .file-input { display: block; margin: 15px 0; } /* Estilo para o campo de foto não ficar grudado */
         .btn-primary { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
         .btn-primary:hover { background: #0056b3; }
         .btn-danger { background: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
         .btn-danger:hover { background: #c82333; }
         .btn-logout { background: #6c757d; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; vertical-align: middle; }
         th { background: #e9ecef; }
         a.edit-link { color: #007bff; text-decoration: none; font-weight: bold; margin-right: 10px; }
         a.edit-link:hover { text-decoration: underline; }
+        .img-tabela { max-width: 80px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
@@ -33,22 +35,27 @@
     </div>
 
     <div class="box">
-        <h2 th:text="${placa != null and placa.id != null ? 'Editar Placa' : 'Cadastrar Nova Placa (INSERT)'}"></h2>
-        <form th:action="@{/placas/salvar}" th:object="${placa}" method="post">
+        <h2 th:text="${placa != null and placa.id != null ? 'Editar Placa' : 'Cadastrar Nova Placa'}"></h2>
+        
+        <form th:action="@{/placas/salvar}" th:object="${placa}" method="post" enctype="multipart/form-data">
             <input type="hidden" th:field="*{id}" th:if="${placa != null and placa.id != null}"/>
+            
             <input type="text" th:field="*{modelo}" placeholder="Modelo (ex: RTX 4060)" required/>
             <input type="text" th:field="*{marca}" placeholder="Marca (ex: ASUS)"/>
             <input type="number" step="0.01" th:field="*{preco}" placeholder="Preço"/>
+            
+            <input type="file" name="imagemPlaca" accept="image/*" class="file-input" required/>
+            
             <button type="submit" class="btn-primary">Gravar no Banco</button>
         </form>
 
         <hr style="margin: 30px 0; border: 1px solid #eee;">
 
-        <h2>Placas no Sistema (SELECT)</h2>
+        <h2>Placas no Sistema</h2>
         <table>
             <thead>
                 <tr>
-                    <th>Modelo</th>
+                    <th>Foto</th> <th>Modelo</th>
                     <th>Marca</th>
                     <th>Preço</th>
                     <th>Ações</th>
@@ -56,6 +63,10 @@
             </thead>
             <tbody>
                 <tr th:each="p : ${lista}">
+                    <td>
+                        <img th:if="${p.imagemUrl != null}" th:src="${p.imagemUrl}" alt="Foto" class="img-tabela">
+                        <span th:if="${p.imagemUrl == null}" style="color: #999; font-size: 12px;">Sem foto</span>
+                    </td>
                     <td th:text="${p.modelo}"></td>
                     <td th:text="${p.marca}"></td>
                     <td th:text="'R$ ' + ${#numbers.formatDecimal(p.preco, 1, 2, 'COMMA')}"></td>

@@ -32,6 +32,9 @@ public class Placavideo {
     @Column(nullable = false)
     private double preco;
 
+    private String imagemUrl;
+
+
     // O JPA OBRIGA a ter um construtor vazio. 
     // Ele usa isto nos bastidores para "montar" a placa de vídeo quando faz o SELECT na base de dados.
     public Placavideo() {}
@@ -45,7 +48,7 @@ public class Placavideo {
     }
 
     // --- GETTERS E SETTERS ---
-    // Eles são obrigatórios para que o Thymeleaf (o ecrã HTML) consiga ler e alterar os dados.
+    // Eles são obrigatórios para que o Thymeleaf consiga ler e alterar os dados.
 
     // Lê o ID da placa
     public UUID getId() { return id; }
@@ -62,4 +65,7 @@ public class Placavideo {
 
     public double getPreco() { return preco; }
     public void setPreco(double preco) { this.preco = preco; }
+
+    public String getImagemUrl() { return imagemUrl; }
+    public void setImagemUrl(String imagemUrl) { this.imagemUrl = imagemUrl; }
 }
